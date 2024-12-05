@@ -173,8 +173,12 @@ function createPostElement(post) {
             <button class="btn-delete" onclick="deletePost('${post.id}')">
                 削除
             </button>
+            <button class="btn-nice" onclick="deletePost('${post.id}')">
+                いいね
+            </button>
+            
         </div>
-    ` : '';
+    `: '';
 
     return `
         <div class="post" id="post-${post.id}">
@@ -197,6 +201,7 @@ function createPostElement(post) {
             </div>
             <div class="post-footer">
                 <span class="post-time">
+                
                     ${formatTimestamp(post.timestamp)}
                 </span>
                 ${post.updatedAt ? `
@@ -329,7 +334,9 @@ $(document).on('keydown', function(e) {
         });
     }
 });
-
+//いいねの処理
+function niceEdit(){
+}
 // 編集の開始
 function startEdit(postId) {
     currentEditId = postId;
