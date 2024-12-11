@@ -276,6 +276,10 @@ textarea.form-control {
 .btn-nice:hover {
     background-color: #2c4de0;
 }
+.btn-nice.active {
+    background-color: #ff69b4;
+    color: white;
+}
 .post-content {
     color: #333;
     line-height: 1.6;

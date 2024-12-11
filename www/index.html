@@ -164,27 +164,26 @@ function canEditPost(post) {
 function createPostElement(post) {
     // 編集権限を確認
     const canEdit = canEditPost(post);
+    const isLiked = post.likes && post.likes[currentUser?.uid];
     // 編集権限があれば、編集・削除機能を表示
-    const actions = canEdit ? `
-        <div class="post-actions">
+    const actions = `<div class="post-actions"> ${canEdit ? `
             <button class="btn-edit" onclick="startEdit('${post.id}')">
                 編集
             </button>
             <button class="btn-delete" onclick="deletePost('${post.id}')">
                 削除
             </button>
-            <button class="btn-nice" onclick="deletePost('${post.id}')">
+            ` : ''}
+            <button class="btn-nice ${isLiked ? 'active' : ''}" onclick="niceEdit('${post.id}')">
                 いいね
             </button>
-            
         </div>
-    `: '';
+    `;
 
     return `
         <div class="post" id="post-${post.id}">
             <div class="post-header">
                 <span class="post-author">${escapeHtml(post.author)}</span>
-                <!-- 編集権限があれば、編集・削除機能を表示 -->
                 ${actions}
             </div>
             <div class="post-content">${escapeHtml(post.content)}</div>
@@ -200,10 +199,7 @@ function createPostElement(post) {
                 </div>
             </div>
             <div class="post-footer">
-                <span class="post-time">
-                
-                    ${formatTimestamp(post.timestamp)}
-                </span>
+                <span class="post-time">${formatTimestamp(post.timestamp)}</span>
                 ${post.updatedAt ? `
                     <span class="post-updated">
                         (編集済み: ${formatTimestamp(post.updatedAt)})
@@ -213,6 +209,7 @@ function createPostElement(post) {
         </div>
     `;
 }
+
 
 // 投稿の表示処理
 function renderPosts(posts) {
@@ -335,7 +332,30 @@ $(document).on('keydown', function(e) {
     }
 });
 //いいねの処理
-function niceEdit(){
+function niceEdit(postId) {
+    const postRef = postsRef.child(postId);
+    const niceButton = document.querySelector(`#post-${postId} .btn-nice`);
+
+    postRef.once('value')
+        .then(snapshot => {
+            const post = snapshot.val();
+            const likes = post.likes || {};
+            if (likes[currentUser.uid]) {
+                delete likes[currentUser.uid];
+                niceButton.classList.remove('active');
+                likes[currentUser.uid] = true;
+                niceButton.classList.add('active');
+            }
+
+            return postRef.update({ likes });
+        })
+        .then(() => {
+            showMessage('いいね状態を更新しました！');
+        })
+        .catch(error => {
+            console.error('いいね更新エラー:', error);
+            showMessage('いいねの更新に失敗しました', 'error');
+        });
 }
 // 編集の開始
 function startEdit(postId) {
