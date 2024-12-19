@@ -152,7 +152,7 @@ function createPost(author, content) {
 
     // author はログインしているユーザのメールアドレスに変更、userId を追加
     const postData = {
-        author: authorInput,//メモ
+        author: author,//メモ
         content: content,
         timestamp: firebase.database.ServerValue.TIMESTAMP,
         userId: currentUser.uid
