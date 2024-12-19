@@ -52,6 +52,18 @@ setInterval(() => {
         }
     });
 }, 60000); 
+
+function validateInput(author, content) {
+    if (!author.trim()) {//メモ
+        showMessage('お名前を入力してください', 'error');
+        return false;
+    }
+    if (author.length > 20) {
+        showMessage('お名前は20文字以内で入力してください', 'error');
+        return false;
+    }
+    return validateContent(content);
+}
 // メッセージ表示処理
 function showMessage(message, type = 'success') {
     const messageArea = $('#messageArea');
@@ -140,7 +152,7 @@ function createPost(author, content) {
 
     // author はログインしているユーザのメールアドレスに変更、userId を追加
     const postData = {
-        author: currentUser.email,
+        author: currentUser.email,//メモ
         content: content,
         timestamp: firebase.database.ServerValue.TIMESTAMP,
         userId: currentUser.uid
@@ -612,6 +624,14 @@ window.addEventListener('unload', function() {
 
         <!-- 投稿フォーム（ログイン時表示） -->
         <div class="post-form logged-in">
+             <div class="post-form">
+            <div class="form-group">
+                <label for="authorInput">お名前</label>
+                <input type="text" id="authorInput" 
+                       class="form-control" placeholder="お名前">
+                <small class="character-count" id="authorCount">0/20</small>
+            </div>
+            <div class="form-group">
             <div class="form-group">
                 <label for="contentInput">投稿内容</label>
                 <textarea id="contentInput" class="form-control" 
