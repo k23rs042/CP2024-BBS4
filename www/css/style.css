@@ -78,6 +78,11 @@ label {
     outline: 0;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
+#authorInput {
+    width: 250px;
+    min-height: 10px;
+
+}
 
 textarea.form-control {
     min-height: 100px;

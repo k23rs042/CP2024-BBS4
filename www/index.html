@@ -421,6 +421,7 @@ function cancelEdit(postId) {
     const postElement = $(`#post-${postId}`);
     postElement.removeClass('editing');
     postElement.find('textarea').val('');
+
 }
 
 // 投稿の更新
@@ -625,13 +626,13 @@ window.addEventListener('unload', function() {
         <!-- 投稿フォーム（ログイン時表示） -->
         <div class="post-form logged-in">
              <div class="post-form">
-            <div class="form-group">
-                <label for="authorInput">お名前</label>
-                <input type="text" id="authorInput" 
-                       class="form-control" placeholder="お名前">
-                <small class="character-count" id="authorCount">0/20</small>
+                 <div class="form-name-group">
+                <label for="authorInput">名前</label>
+                <textarea id="authorInput" class="form-control" 
+                          placeholder="名前を入力してください"></textarea>
+                <small class="character-count" id="contentCount">0/1000</small>
             </div>
-            <div class="form-group">
+            <id="authorInput" ></div>
             <div class="form-group">
                 <label for="contentInput">投稿内容</label>
                 <textarea id="contentInput" class="form-control" 
